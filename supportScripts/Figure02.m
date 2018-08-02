@@ -1,4 +1,16 @@
 function Figure02(out)
+% FIGURE02:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+
+%%
 close all
 
 fontsize = 9;
@@ -30,7 +42,7 @@ v1 = sqrt(sum(vv1.^2,2));
 v2 = sqrt(sum(vv2.^2,2));
 v3 = sqrt(sum(vv3.^2,2));
 
-tstart = out{j,i}.timing(4); 
+tstart = out{j,i}.timing(4);
 tMD12 = out{j,i}.timing(6);
 tMD13 = out{j,i}.timing(1);
 tID12 = out{j,i}.timing(15);
@@ -81,7 +93,6 @@ set(t1,'rotation',90);%,'HorizontalAlignment','center');
 t1 = text(vl(3)-xcor,yt,'t_{MD13}');
 set(t1,'rotation',90);%,'HorizontalAlignment','center');
 
-% axis([0 10 -90 90])
 xlabel('Time (s)');
 ylabel('Change in Heading (deg.s^{-1})');
 box off
@@ -135,22 +146,16 @@ xlabel('Time (s)');
 ylabel('Interpersonal distance (m)')
 box off
 
-
-
-% pos = [0.8298    0.6633    0.1304    0.1159];%get(l1,'Position');
 pos = get(l1,'Position');
 disp(pos)
 correction = [0 0.06 0.13 0];
 set(l1, 'Position', pos+correction)
-% pos = [   0.81558  0.306690    0.1411    0.0810];%get(l2,'Position');
-% correction = [1 1 1 1];
+
 pos = get(l2,'Position');
 disp(pos)
 correction = [0 0.06 0.13 0];
 set(l2, 'Position', pos+correction)
 
-% pos = [   0.81558  0.306690    0.1411    0.0810];%get(l2,'Position');
-% correction = [1 1 1 1];
 pos = get(l3,'Position');
 disp(pos)
 correction = [0 0.06 0.13 0];
@@ -164,6 +169,9 @@ set(l2,'visible','off')
 set(l3,'visible','off')
 
 set(gcf, 'Units', 'Centimeters', 'OuterPosition', [5,5, 20, 10]);
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 fpath =  'Figs\';
 
 print( fid, '-r300' ,'-dtiff' ,[fpath 'Fig02_timingExplanation.tiff']) % here you can specify filename extensions

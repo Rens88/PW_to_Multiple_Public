@@ -1,7 +1,27 @@
 function Figure07_reportInversion(out,basedOn,ingThreshold)
+% FIGURE07_REPORTINVERSION:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+% basedOn - contains the (string) reference measure that is compared:
+% - MPD = minimal predicted distance (or Distance at Closest approach * code is confirmed to work for MPD
+% - BA = the bearing angle
+% - ID = the intersection distance
+% - DGvel = the gradient of the dynamic gap
+% ingThreshold = which definition of opening and closing should be used (i.e., the minimum change required to label a trial as closING or openING)
+%
+% if ingThreshold is 0 --> the previous definition of opening and closing
+% if it is any other number then that number corresponds to the last
+% percentage where an inverted DG occurred.
 
+%%
 YVals = [-4 4];
-
 
 darkRed = [170 0 0]/255;
 lightRed = [255 128 128]/255;
@@ -94,30 +114,7 @@ for i = 1:4
                     MPD13{cr3}(:,curSP3) = temp2(:,60);
                     MPDmin{cr3}(:,curSP3) = temp2(:,61);
                     
-                    %                         BA12{cr3}(:,curSP3) = temp2(:,63);
-                    %             BA13{cr3}(:,curSP3) = temp2(:,64);
-                    %             BAmin{cr3}(:,curSP3) = temp2(:,65);
-                    
-                    % tempMPDs = abs(temp2(:,[2 3]));
-                    % [~,ind] = min(tempMPDs');
-                    % for qut = 1:1000
-                    % mult = 1;
-                    % if temp2(qut,2) > 0 && temp2(qut,3) < 0
-                    % % open
-                    % elseif temp2(qut,2) < 0 && temp2(qut,3) > 0
-                    % % open
-                    % else
-                    % % closed
-                    % mult = -1;
-                    % end
-                    % MPDmin{cr3}(qut,curSP3) = tempMPDs(qut, ind(qut))*mult;
-                    % end
-                    
                     ing = 0; % closING or openING
-                    % MPD based - DG inversion
-                    %                     if j == 18
-                    %                         disp('hi')
-                    %                     end
                     if strcmp(basedOn,'MPD')
                         DGinv{cr3}(curSP3) = 0;
                         if ingThreshold == 0
@@ -137,9 +134,9 @@ for i = 1:4
                                 %                         '..ing'
                                 ing = 1; % closING or openING
                                 DGinv{cr3}(curSP3) = 1;
-%                                 if out{j,i}.crossed(3) == 0
-%                                     disp([i j])
-%                                 end
+                                %                                 if out{j,i}.crossed(3) == 0
+                                %                                     disp([i j])
+                                %                                 end
                             end
                             
                         end
@@ -280,51 +277,41 @@ text(XVals(1)+(6+3)/XCorrection,YVals(1)+(6+4.7)/YCorrection2,'(In front)')
 
 manualLegend()
 
-pos(1) = .50;  % ondergrens horizontal
-pos(2) = .15; % ondergrens vertical
-pos(3) = .35; % bovengrens horizontal
-pos(4) = .718; % bovengrens vertical
+pos(1) = .50;  % lower limit horizontal
+pos(2) = .15; % lower limit vertical
+pos(3) = .35; % upper limit horizontal
+pos(4) = .718; % upper limit vertical
 set(gca,'Position',pos)
 subplot(1,2,1)
-pos(1) = .07;  % ondergrens horizontal
-pos(2) = .15; % ondergrens vertical
-pos(3) = .35; % bovengrens horizontal
-pos(4) = .718; % bovengrens vertical
+pos(1) = .07;  % lower limit horizontal
+pos(2) = .15; % lower limit vertical
+pos(3) = .35; % upper limit horizontal
+pos(4) = .718; % upper limit vertical
 set(gca,'Position',pos)
 
-
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 fpath = 'Figs\';
 
 print( h39, '-r300' ,'-dtiff' ,[fpath 'Fig07_DGsorted_' basedOn '.tiff']) % here you can specify filename extensions
 
     function manualLegend()
-        %
-        %                 x1 = [102.5 107.5];
-        %         x2 = 110;
-        %         x3 = 115;
         x1 = [XVals(1)+(6+6.4)/XCorrection .2/XCorrection];
         x2 = XVals(1)+(6+6.7)/XCorrection;
         x3 = XVals(1)+(6+8)/XCorrection;
-        % cr = 0;
-        
-        %         yt = (YVals(1)+1.4+1.3)/YCorrection;
         yt = YVals(1)+(1.4+1.3)/YCorrection;
         yt = yt - 0.5;
         
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;
-        % cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
         text(XVals(1)+(6+6.4)/XCorrection,yt+0.5,'Open','clipping','off')
         plot(XVals(1)+(6+6.4)/XCorrection,yt,'.','Color',lightGreen,'clipping','off','MarkerSize',13)
-        % plot(x1,yt,'.','Color',lightGreen,'clipping','off','MarkerSize',13)
+        
         text(x2,yt,'No inversion','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt+.3,['(\itn\rm = ' num2str(nOpen) ')'],'clipping','off')
         
         yt = yt - .3/YCorrection+.8;
         y1(1:2) = yt-.1/YCorrection;y2(1:2) = yt+.1/YCorrection;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'o','Color',darkGreen ,'MarkerSize',4,'clipping','off')
         plot(XVals(1)+(6+6.4)/XCorrection,yt,'o','Color',darkGreen ,'MarkerSize',4,'clipping','off')
         text(x2,yt,'Inversion','clipping','off')
         yt = yt - .2/YCorrection;
@@ -335,18 +322,12 @@ print( h39, '-r300' ,'-dtiff' ,[fpath 'Fig07_DGsorted_' basedOn '.tiff']) % here
         yt = yt +2;
         text(XVals(1)+(6+6.4)/XCorrection,yt+0.5,'Closed','clipping','off')
         plot(XVals(1)+(6+6.4)/XCorrection,yt,'o','MarkerSize',4,'Color',darkRed,'clipping','off')
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'-','Color',darkRed ,'MarkerSize',4,'clipping','off')
         text(x2,yt,'Inversion','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt+.3,['(\itn\rm = ' num2str(nClosing) ')'],'clipping','off')
         
         yt = yt - .3/YCorrection +.8;
         plot(XVals(1)+(6+6.4)/XCorrection,yt,'.','Color',lightRed,'clipping','off','MarkerSize',13)
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'.','Color',lightRed,'clipping','off','MarkerSize',13)
         text(x2,yt,'No inversion','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt+.3,['(\itn\rm = ' num2str(nClosed) ')'],'clipping','off')

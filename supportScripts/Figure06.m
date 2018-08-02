@@ -1,9 +1,20 @@
-% 25-08-2016 Rens Meerhoff
+function Figure06(out)
+% FIGURE06:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+% out - contains the data from PW_to_Multiple_Public.mat
+%
 % This plots the frequency of PpA crossing through the middle of PpB&C. It
 % is ordered per RELATIVE starting formation (that is, depending on the
 % direction of crossing, formations have been mirrored). The percentage is
 % computed as the percentage of the total trials in that condition.
-function Figure06(out)
+
+%%
 res = NaN(500,8);
 res2 = NaN(500,8);
 count = 0;            countpw = 0;
@@ -17,7 +28,6 @@ for i = 1:4
             temp(count,2) = out{j,i}.crossed(3);
             
             res(count,temp(count,1)+1) = temp(count,2);
-            
             
             if out{j,i}.crossed(1) == 1 && out{j,i}.crossed(2) == 0
                 % crossed
@@ -86,11 +96,6 @@ set(b1,{'FaceColor'},{'w';'k';cgrey});
 b2 = bar(xpos,toplot2(1:4,:),'stacked','barwidth',.2,'EdgeColor',[0 0 0]);
 set(b2,{'FaceColor'},{'w';'k';cgrey});
 
-% b3 = bar(3.5,100,'stacked','barwidth',.52,'EdgeColor',[0 0 0],'FaceColor','w');
-
-% b3 = bar(3.5,toplot(5,1),'stacked','barwidth',.52,'EdgeColor',[0 0 0],'FaceColor','w');
-
-
 h6 = text(3.5,toplot(2,1)+toplot(2,2)/2,'through');
 set(h6, 'rotation', 90,'HorizontalAlignment','center','Color','w')
 
@@ -98,46 +103,11 @@ h6a = text(3.5,toplot(2,1)/2,'in front');
 set(h6a, 'rotation', 90,'HorizontalAlignment','center','Color','k')
 h6b = text(3.5,toplot(2,1) + toplot(2,2) + toplot(2,3)/2,'behind');
 set(h6b, 'rotation', 90,'HorizontalAlignment','center','Color','k')
-% 
-% h7 = text(1,toplot(1,2)/2+toplot(1,1),'Around');
-% set(h7, 'rotation', 90,'HorizontalAlignment','center')
- 
-% toplot = [perc([4 2 8 6 1]) 100-perc([4 2 8 6 1])];
-% toplot2 = [perc([5 3 9 7]) 100-perc([5 3 9 7]); NaN NaN];
-% 
-% xpos = [1 4.5 7 9.5];
-% b1 = bar(xpos,toplot(1:4,:),'stacked','barwidth',.2,'EdgeColor',[0 0 0]);
-% xpos = xpos + 1;
-% set(b1,{'FaceColor'},{'k';'w'});
-% 
-% b2 = bar(xpos,toplot2(1:4,:),'stacked','barwidth',.2,'EdgeColor',[0 0 0]);
-% set(b2,{'FaceColor'},{'k';'w'});
-% 
-% b3 = bar(3.5,toplot(5,2),'barwidth',.52,'EdgeColor',[0 0 0]);
-% set(b3,{'FaceColor'},{'w'});
-% 
-% h6 = text(1,toplot(1,1)/2,'Through');
-% set(h6, 'rotation', 90,'HorizontalAlignment','center','Color','w')
-% h7 = text(1,toplot(1,2)/2+toplot(1,1),'Around');
-% set(h7, 'rotation', 90,'HorizontalAlignment','center')
-
-
 
 set(axes1,'GridLineStyle','none','XTick',[1.5 4 6.5 9],'XTickLabel',{'-45^{o}   ','0^{o}   ','45^{o}   ','90^{o}   '});
 set(axes1,'GridLineStyle','none','YTick',[0 25 50 75 100],'YTickLabel',{'0','','50','','100'});
 
 textXcor = .43;
-
-% h3 = text(3.5-textXcor,50,'0.6m');
-% set(h3, 'rotation', 90,'HorizontalAlignment','center')
-% % % % % % % h4 = text([1 3.5 6 8.5]-textXcor,[50 50 50 50],'2.0m');
-% % % % % % % set(h4, 'rotation', 90,'HorizontalAlignment','center')
-% % % % % % % h5 = text([2 4.5 7 9.5]-textXcor,[50 50 50 50],'4.0m');
-% % % % % % % set(h5, 'rotation', 90,'HorizontalAlignment','center')
-
-
-
-
 
 tPos2 = [1 -4.5 0;...
     3.5 -4.5 0; ...
@@ -149,32 +119,29 @@ tPos4 = [2 -4.5 0; ...
     9.5 -4.5 0];
 
 for q = 1:4
-h4 = text('Position',tPos2(q,:),'String','2m');
-set(h4, 'rotation', 90,'HorizontalAlignment','center')
-h5 = text('Position',tPos4(q,:),'String','4m');
-set(h5, 'rotation', 90,'HorizontalAlignment','center')
+    h4 = text('Position',tPos2(q,:),'String','2m');
+    set(h4, 'rotation', 90,'HorizontalAlignment','center')
+    h5 = text('Position',tPos4(q,:),'String','4m');
+    set(h5, 'rotation', 90,'HorizontalAlignment','center')
 end
 
- set(get(gca,'YLabel'),'Rotation',90); 
- set(get(gca,'XLabel'),'Rotation',180,'VerticalAlignment','bottom'); 
- axes1.XTickLabelRotation=90;
- axes1.YTickLabelRotation=90;
+set(get(gca,'YLabel'),'Rotation',90);
+set(get(gca,'XLabel'),'Rotation',180,'VerticalAlignment','bottom');
+axes1.XTickLabelRotation=90;
+axes1.YTickLabelRotation=90;
 
 axis([0.25 10 0 100])
 
 scale = 1.1;
 pos = get(gca, 'Position');
-% pos(2) = pos(2)+scale*pos(2);
 pos(1) = .1;
 pos(2) = .2;
 pos(3) = .87;
 pos(4) = .76;
 set(gca, 'Position', pos)
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
+print(  '-r300' ,'-dtiff' ,'Figs\Fig06_freq_cross_updated_onlyonce_bf_rotated.tiff') % here you can specify filename extensions
 
-cd('Figs\')
-
-print(  '-r300' ,'-dtiff' ,'Fig06_freq_cross_updated_onlyonce_bf_rotated.tiff') % here you can specify filename extensions
-% close(fid)
-cd ..
-cd ..
 end

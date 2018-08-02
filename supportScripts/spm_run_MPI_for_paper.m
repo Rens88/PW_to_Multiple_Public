@@ -1,11 +1,22 @@
+function [frameDiff,saveInfo] = spm_run_MPI_for_paper(d1,d2,curString,xstring,alphaLevel,saveInfo)
+% SPM_RUN_MPI_FOR_PAPER
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
 % d1 = list of all time-series (equal length) set-up with n-trials as rows and n-timepoints as columns
 % d2 = same but for second condition
 % conditions = is string input of 2 conditions
 % filename = input of filename that serves both as the title in the plot
 % and as the filename the figure is saved.
 % xstring
-
-% % % Example:
+%
+%
+% Example:
 % d1 = rand(1000,10);
 % d2 = rand(1000,10);
 % conditions{1} = 'Condition 1';
@@ -14,9 +25,7 @@
 % xstring = 'Time';
 % ystring = 'Output';
 
-function [frameDiff,saveInfo] = spm_run_MPI_for_paper(d1,d2,curString,xstring,alphaLevel,saveInfo)
-% saveInfo = [];
-% expColor = [112 112 112]/255;%[ 0 0 0];
+%%
 expColor = [ 0 0 0];
 W12Color = 'r';
 W13Color = 'b';
@@ -26,44 +35,27 @@ row_045deg = 1;
 row_090deg = 4;
 row_m45deg = 3;
 
-
-% alphaLevel = .05/8;
-
 sbform([row_000deg row_045deg row_090deg row_m45deg]) = [4 2 8 6];
 
 if strcmp(curString.form,'0m_000deg')
-    %     sb = 1;
     frameDiff = NaN;
     return
 elseif strcmp(curString.form,'2m_000deg')
-    %     sb = 2;
     sb = row_000deg*3 -1;
-    %     sbform(sb-1) = 4;
 elseif strcmp(curString.form,'4m_000deg')
-    %     sb = 3;
     sb = row_000deg*3 -0;
 elseif strcmp(curString.form,'2m_045deg')
-    %     sb = 5;
     sb = row_045deg*3 -1;
-    %     sbform(sb-1) = 2;
 elseif strcmp(curString.form,'4m_045deg')
-    %     sb = 6;
     sb = row_045deg*3 -0;
     
 elseif strcmp(curString.form,'2m_090deg')
-    %     sb = 8;
     sb = row_090deg*3 -1;
-    
-    %     sbform(sb-1) = 8;
 elseif strcmp(curString.form,'4m_090deg')
-    %     sb = 9;
     sb = row_090deg*3 -0;
 elseif strcmp(curString.form,'2m_-45deg')
-    %     sb = 11;
     sb = row_m45deg*3 -1;
-    %     sbform(sb-1) = 6;
 elseif strcmp(curString.form,'4m_-45deg')
-    %     sb = 12;
     sb = row_m45deg*3 -0;
 end
 
@@ -125,7 +117,6 @@ elseif sb == 3
     title('4m Radius')
 end
 
-
 if strcmp(curString.refPp,'W2')
     condColor = W12Color;
 elseif strcmp(curString.refPp,'W3')
@@ -154,11 +145,9 @@ set(hB0, 'lineStyle', stString)
 set(hB0, 'LineWidth', 1.6)
 frameTime = 1:688;
 if strcmp(curString.refPp,'W3') && ~isempty(firstDiff)
-    %     plot([firstDiff 688],[.4 .4],':b', 'LineWidth', 1.6)
-    %     plot( ((688 - firstDiff) / 2) + firstDiff-1,.55,'*b')
+    
     frameWHY(1:688) = 2.355;
     l=      plot(frameTime(frameDiff),frameWHY(frameDiff),':b', 'LineWidth', 1.6);
-    % l=      plot([firstDiff 688],[2.355 2.355],':b', 'LineWidth', 1.6);
     set(l,'clipping','off')
     
     if any(sb == [6 9 12])    % if there is also a difference for W12.
@@ -169,9 +158,6 @@ if strcmp(curString.refPp,'W3') && ~isempty(firstDiff)
     if firstDiff ~= 1
         
         saveInfo = [saveInfo ; sb firstDiff lastDiff frameWHY(1) 0 0 1];
-        %         l= plot( [ frameTime(firstDiff) frameTime(firstDiff)],[frameWHY(1)-.1 frameWHY(1)+.1],'-r', 'LineWidth', 1.6);hold on;
-        
-        %     set(l,'clipping','off')
     end
     
 elseif strcmp(curString.refPp,'W2') && ~isempty(firstDiff)
@@ -179,10 +165,8 @@ elseif strcmp(curString.refPp,'W2') && ~isempty(firstDiff)
     
     l= plot( frameTime(frameDiff),frameWHY(frameDiff),'--r', 'LineWidth', 1.6);hold on;
     
-    %     l= plot([firstDiff 688],[2.3 2.3],'--r', 'LineWidth', 1.6);hold on;
     set(l,'clipping','off')
     
-    %     plot( ((688 - firstDiff) / 2) + firstDiff-1,.15,'*r')
     if any(sb == [6 9 12]) % if there is also a difference for W13.
         text( .93*(((lastDiff - firstDiff) / 2) + firstDiff-1),2.48,'\Delta','Color','r','FontSize',9,'HorizontalAlignment','Center')
     else
@@ -192,9 +176,7 @@ elseif strcmp(curString.refPp,'W2') && ~isempty(firstDiff)
     if firstDiff ~= 1
         
         saveInfo = [saveInfo ; sb firstDiff lastDiff frameWHY(1) 1 0 0];
-        %         l= plot( [ frameTime(firstDiff) frameTime(firstDiff)],[frameWHY(1)-.1 frameWHY(1)+.1],'-r', 'LineWidth', 1.6);hold on;
         
-        %     set(l,'clipping','off')
     end
     
 end
@@ -206,7 +188,6 @@ if  ~isempty(firstDiff)
     disp(['SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', p = ' num2str(SPMi.p)])
     disp(['SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', CORRECTED p = ' num2str(SPMi.p*(.05/alphaLevel))])
 end
-
 
 legendString1 = [    curString.refFormString '_' curString.ord '_' curString.inv];
 legendString2 = [curString.form '_' curString.ord '_' curString.refPp '_' curString.inv];
@@ -225,29 +206,6 @@ for q = 1:length(legendString2)
     end
 end
 
-
-
-% % % % % % % % % % if strcmp(curString.refPp,'W3')
-% % % % % % % % % %     if ~strcmp(curString.form,'4m_045deg')
-% % % % % % % % % %
-% % % % % % % % % %         lg = legend('PW (\itn\rm = 48)','W12 (\itn\rm = 48)','W13 (\itn\rm = 48)', ...
-% % % % % % % % % %             'Location','SouthEast');
-% % % % % % % % % %
-% % % % % % % % % %     else % because of the one missing trial
-% % % % % % % % % %         lg = legend('PW (\itn\rm = 48)','W12 (\itn\rm = 47)','W13 (\itn\rm = 48)', ...
-% % % % % % % % % %             'Location','SouthEast');
-% % % % % % % % % %
-% % % % % % % % % %     end
-% % % % % % % % % %     legend('boxoff')
-% % % % % % % % % % %     set(lg, 'horizontalAlignment', 'right')
-% % % % % % % % % %     %     legend(hB0,[tempName2 ' (\itn\rm = ' num2str(size(d2,1)) ')'])
-% % % % % % % % % %
-% % % % % % % % % %     % else
-% % % % % % % % % %     % legend([hA0 hB0], [tempName1 ' (\itn\rm = ' num2str(size(d1,1)) ')'], ...
-% % % % % % % % % %     %     [tempName2 ' (\itn\rm = ' num2str(size(d2,1)) ')'], 'Location','NorthEast')
-% % % % % % % % % % end
-
-
 set(gca,'XTick',[0 (size(d1,2)/4)*1 (size(d1,2)/4)*2 (size(d1,2)/4)*3 (size(d1,2)/4)*4] , ...
     'XTickLabel',{'0','','50','','100'})
 set(gca,'XLim',[0 size(d1,2) ])
@@ -256,15 +214,14 @@ set(gca,'YLim',[0 2.25],'YTick',[0 .5 1 1.5 2 ],'YTickLabel',{'0','','1','','2'}
 xlabel(xstring)
 ylabel('\itMPD\rm (m)')
 
-
 if strcmp(curString.form,'4m_045deg') && strcmp(curString.refPp,'W3') % last one.
- 
+    
     for q = 1:size(saveInfo,1)
         
         subplot(4,3,round(saveInfo(q,1)));hold on;
         l= plot( [ frameTime(saveInfo(q,2)) frameTime(saveInfo(q,2))],[saveInfo(q,4)-.1 saveInfo(q,4)+.1],'-','Color',saveInfo(q,5:7), 'LineWidth', 1.6);hold on;
-                set(l,'clipping','off')
-l= plot( [ frameTime(saveInfo(q,3)) frameTime(saveInfo(q,3))],[saveInfo(q,4)-.1 saveInfo(q,4)+.1],'-','Color',saveInfo(q,5:7), 'LineWidth', 1.6);hold on;
+        set(l,'clipping','off')
+        l= plot( [ frameTime(saveInfo(q,3)) frameTime(saveInfo(q,3))],[saveInfo(q,4)-.1 saveInfo(q,4)+.1],'-','Color',saveInfo(q,5:7), 'LineWidth', 1.6);hold on;
         
         set(l,'clipping','off')
     end
@@ -278,14 +235,12 @@ l= plot( [ frameTime(saveInfo(q,3)) frameTime(saveInfo(q,3))],[saveInfo(q,4)-.1 
         if q == 3
             lg = legend('W12 (\Delta)','W13 (*)','PW','Location','NorthEast');
             pos = [0.856041667095075 0.870886424475085 0.150493749995715917 0.0449369025068967];
-                        pos = pos.*[.98 1.0 1 1];
-
+            pos = pos.*[.98 1.0 1 1];
+            
             set(lg,    'Position',pos)%,...
             % 'FontSize',fontsize-1)
             
-           legend('boxoff');
-
-            
+            legend('boxoff');
             
         end
     end
@@ -309,11 +264,10 @@ l= plot( [ frameTime(saveInfo(q,3)) frameTime(saveInfo(q,3))],[saveInfo(q,4)-.1 
     else
         corString = '_corrected';
     end
-    filename = 'Fig05_all_formation_for_paper'; 
+    filename = 'Fig05_all_formation_for_paper';
     print(figHandle, '-dtiff', '-r300', [tempFigDir filename corString '.tiff'])
-
+    
     close(figHandle)
 end
-
 
 end

@@ -6,9 +6,30 @@
 % tti --> time to interaction
 % mpd --> minimal predicted distance
 % cba --> constant bearing angle
-% % NICOLAS: Note that the computation of cba is unverified (Rens, 4-4-2017)
+% Note that the computation of cba is unverified (Rens, 4-4-2017)
 
 function [tti,mpd,cba] = time_to_interaction_sign(p1,v1,p2,v2,varargin)
+% TIME_TO_INTERACTION:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% Adaptation of the code made available in the Matlab library from Anne-Helen Olivier.
+%
+% Input required is the position and velocity vectors of two agents.
+% Optional input is 'absMPD' (1 = absolute MPD, 0 = signed MPD)
+%
+% Output consists of:
+% tti --> time to interaction
+% mpd --> minimal predicted distance
+% cba --> constant bearing angle
+% Note that the computation of cba is unverified (Rens, 4-4-2017)
+
+%%
 absMPD = 1;
 mult = 1;
 if nargin == 5
@@ -18,7 +39,7 @@ if nargin == 5
     
 end
 
-% NICOLAS: Note that the computation of cba is unverified (Rens, 4-4-2017)
+% Note that the computation of cba is unverified (Rens, 4-4-2017)
 ba = atan2(p2(:,2)-p1(:,2),p2(:,1)-p1(:,1));
 cba = gradient(ba);
 

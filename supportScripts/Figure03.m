@@ -1,7 +1,19 @@
+function Figure03(out)
+% FIGURE03:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+%
 % Plotting exemplar trials to explain going through and around in terms of
 % signed MPD
-function Figure03(out)
 
+%%
 fontsize = 9;
 set(0,'defaultaxesfontsize',fontsize);set(0,'defaulttextfontsize',fontsize);
 set(0,'defaultaxesfontname','Gill Sans MT');set(0,'defaulttextfontname','Gill Sans MT');
@@ -11,7 +23,6 @@ set(0,'defaultFigurePaperunits','centimeters','defaultFigurePapersize',[x_width,
 close all
 
 h = figure(10); hold on;
-
 
 % Indices of all trials that could be interesting to look at organized
 % based on crossing behavior.
@@ -30,14 +41,13 @@ indCUR = indINF(i);
 % The group that will be plotted
 group = 1;
 trial = indCUR;
-   
+
 % the variables
 time = out{trial,group}.universalTimeSeriesTend(:,62);
 MPD12 = out{trial,group}.universalTimeSeriesTend(:,2)-.08;
 MPD13 = out{trial,group}.universalTimeSeriesTend(:,3);
 ID12 = -out{trial,group}.universalTimeSeriesTend(:,59)+.08; % NB: we artifically inverted ID to best explain all possible scenarios of DG
 ID13 = out{trial,group}.universalTimeSeriesTend(:,60);
-
 
 correctionToGoBehind = -2.5;
 p1 = out{trial,group}.universalTimeSeriesTend(:,13:14);
@@ -58,7 +68,6 @@ plot(time(1:tend_w2-1),MPD12(1:tend_w2-1),'b','LineWidth',2);hold on
 
 plot(time,MPD13,'--r','LineWidth',2)
 plot(time(tend_w2:end),MPD12(tend_w2:end),':b','LineWidth',2);hold on
-
 
 hline(0,'k');
 axis([0 100 -2 2])
@@ -109,11 +118,11 @@ sb3 = subplot(1,3,3);    hold off
 temp = [ID12 ID13];
 [~,ind] = min(abs(temp),[],2);
 for i = 1:length(temp)
-DG(i,1) = abs(temp(i,ind(i)));
-if ~(ID12(i) < 0 && ID13(i) > 0) || (ID12(i) > 0 && ID13(i) < 0)
-    % closed
-    DG(i,1) = DG(i,1)*-1;
-end
+    DG(i,1) = abs(temp(i,ind(i)));
+    if ~(ID12(i) < 0 && ID13(i) > 0) || (ID12(i) > 0 && ID13(i) < 0)
+        % closed
+        DG(i,1) = DG(i,1)*-1;
+    end
 end
 dind = ind(2:end) - ind(1:end-1);
 inds = find(dind~=0);
@@ -136,7 +145,6 @@ for i = 1:length(inds)+1
     
 end
 
-
 hline(0,'k');
 axis([0 100 -2 2])
 set(gca,'YTick',[-2 -1 0 1 2])
@@ -144,7 +152,6 @@ set(gca,'XTick',[0 25 50 75 100])
 xlabel('Time (%)')
 ylabel('\itDG\rm (m)')
 box off
-
 
 pos =     [0.2219-.04    0.87944    0.1536    0.1000];
 set(l1,'Position',pos)
@@ -158,12 +165,12 @@ set(sb2,'Position',pos)
 pos =     [0.6963+.04    0.1100+.04   0.2039+.03    0.79150];
 set(sb3,'Position',pos)
 
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 
 fpath =  'Figs\';
 filename = 'Fig03_examplarGap_MPD_ID_DG';
 print( h, '-r300' ,'-dtiff' ,[fpath filename '.tiff']) % here you can specify filename extensions
 
 end
-
-
-     

@@ -1,9 +1,22 @@
+function [d_out, d1,output3D,outputLabel3D,output3D_DG,output3D_ID,outputLabel3D_gap] = combineAll_ResultsLMM(out,varargin)
+% COMBINEALL_RESULTSLMM:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+% varargin - contains which formations should be included and whether the figures should be combined in a subplot
+%
 % Create a 3D dataset that can be easily accessed for comparing time-series
 % with PW and each of the other formations
 % Allows you also to create all possible plots, comparing the pairwise
 % formation with each of the group formations.
 
-function [d_out, d1,output3D,outputLabel3D,output3D_DG,output3D_ID,outputLabel3D_gap] = combineAll_ResultsLMM(out,varargin)
+%%
 %% Reference participant
 % 2 = W2, 3 = W3, 23 = both W2 & W3
 refPp = 2:3;
@@ -191,7 +204,6 @@ for refPpind = refPp
                                         end
                                     end
                                     
-                                    
                                 end
                                 crossOrder3D(1,curTrial,curForm) = crossOrder;
                                 if any(curForm == [9 10])
@@ -326,7 +338,5 @@ tmp1 = sum(W1first(1:383,2));
 tmp2 = 383;
 tmp3 = round(tmp1 / tmp2 * 100);
 disp(['W1 first in ' num2str(tmp1) ' out of ' num2str(tmp2) ' = ' num2str(tmp3) '% of the W13 interactions'])
-
-
 
 end

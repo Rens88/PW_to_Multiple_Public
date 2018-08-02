@@ -1,4 +1,14 @@
 function[fillhandle,msg]=jbfill(xpoints,upper,lower,color,edge,add,transparency)
+% JBFILL:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+% This function was borrowed from John A. Bockstege (see below for detailed acknowledgments)
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
 %USAGE: [fillhandle,msg]=jbfill(xpoints,upper,lower,color,edge,add,transparency)
 %This function will fill a region with a color between the two vectors provided
 %using the Matlab fill command.
@@ -8,7 +18,7 @@ function[fillhandle,msg]=jbfill(xpoints,upper,lower,color,edge,add,transparency)
 %         must equal Length(lower)and must equal length(xpoints)!
 %upper = the upper curve values (data can be less than lower)
 %lower = the lower curve values (data can be more than upper)
-%color = the color of the filled area 
+%color = the color of the filled area
 %edge  = the color around the edge of the filled area
 %add   = a flag to add to the current plot or make a new one.
 %transparency is a value ranging from 1 for opaque to 0 for invisible for
@@ -36,9 +46,9 @@ if length(upper)==length(lower) && length(lower)==length(xpoints)
     end
     fillhandle=fill(xpoints,filled,color);%plot the data
     set(fillhandle,'EdgeColor',edge,'FaceAlpha',transparency,'EdgeAlpha',transparency);%set edge color
-%     if add
-%         hold off
-%     end
+    %     if add
+    %         hold off
+    %     end
 else
     msg='Error: Must use the same number of points in each vector';
 end

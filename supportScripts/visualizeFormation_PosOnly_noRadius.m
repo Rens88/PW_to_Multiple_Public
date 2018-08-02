@@ -1,6 +1,18 @@
+function visualizeFormation_PosOnly_noRadius(conditionString,Center,Radius)
+% VISUALIZEFORMATION_POSONLY_NORADIUS:
+% COMBINEALL_RESULTSLMM:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
 % 07/04/2017, Rens Meerhoff
-% Where 'conditionsID' is specified by an integer input:
-% 1 = 'Midmid'
+%
+% Where 'conditionString' is specified by an integer input:
+% 1 = 'Midmid' NB: this condition was not part of the experiment
 % 2 = '2m, 0deg'
 % 3 = '4m, 0deg'
 % 4 = '2m, -45deg'
@@ -10,26 +22,16 @@
 % 8 = '2m45deg'
 % 9 = '4m45deg'
 % 10= 'Pairwise'
-
+%
 % Where 'Center' contains the 'x' and 'y' center in the current axis.
+%
 % Where 'Radius' the 'x' and 'y' multiplication factor.
 
-function visualizeFormation_PosOnly_noRadius(conditionString,Center,Radius)
-% conditionString = {'4m, -450deg'};
-% conditions = {'Midmid','2m, 0deg','4m, 0deg','2m, -45deg','4m, -45deg' ...
-%     '2m, 90deg','4m, 90deg','2m45deg','4m45deg','Pairwise'};
-% conditions = {'Midmid','2m_0deg','4m_0deg','2m_-45deg','4m_-45deg' ...
-%     '2m_90deg','4m_90deg','2m_45deg','4m_45deg','Pairwise'};
+
+%%
 conditions = {'0m_000deg','2m_000deg','4m_000deg','2m_-45deg','4m_-45deg' ...
     '2m_090deg','4m_090deg','2m_045deg','4m_045deg','Pairwise'};
 conditionsID = conditionString;
-% for q = 1:length(conditions)
-%     if strcmp(conditionString,conditions{q})
-%         conditionsID = q;
-%         break
-%     end
-% end
-
 
 if ~isempty(conditionsID)
     % To convert from Radius to Diameter
@@ -49,13 +51,6 @@ if ~isempty(conditionsID)
     
     c1Highlighted = [1 0 0];
     c2Highlighted = [0 0 1];
-    
-    
-    
-    %     temp = [2 NaN NaN 8 NaN NaN 6 NaN NaN 4];
-    %     temp = [4 NaN NaN 2 NaN NaN 8 NaN NaN 6];
-    
-    %         [9 3 4 5 6 7 8 1 2 0];
     
     nform = conditionsID;%temp(conditionsID);
     if nform == 4 % 0 deg
@@ -84,8 +79,6 @@ if ~isempty(conditionsID)
         degText = '45^o';
     end
     
-    
-    
     plot(Center(1)+Diameter(1)*([-.38 .38]),Center(2)+Diameter(2)*([1 1]),'Color',c1,'LineWidth',1.5);hold on;
     plot(Center(1)+Diameter(1)*([0 0]),Center(2)+Diameter(2)*([.62 1.38]),'Color',c1,'LineWidth',1.5);
     plot(Center(1)+Diameter(1)*(.38*[-sind(45) sind(45)]),Center(2)+Diameter(2)*(1+.38*[cosd(45) -cosd(45)]),'Color',c1,'LineWidth',1.5);
@@ -101,11 +94,6 @@ if ~isempty(conditionsID)
     degX = Center(1)+Diameter(1)*(-.6);
     degY = Center(2)+Diameter(2)*(1+.38*y0);
     text(degX,degY,degText,'HorizontalAlignment','Right','VerticalAlignment','middle','FontWeight','bold','FontSize',10)
-    
-%     text(Center(1)+Diameter(1)*(x90),Center(2)+Diameter(2)*(1+.38*y90),'90^{o}')
-%     text(Center(1)+Diameter(1)*(.38*x45),Center(2)+Diameter(2)*(1+.38*-y45),'45^{o}')
-%     text(Center(1)+Diameter(1)*(.38*x0-.025),Center(2)+Diameter(2)*(1+.38*y0),'0^{o}')
-%     text(Center(1)+Diameter(1)*(.38*x45-.05),Center(2)+Diameter(2)*(1+.38*y45+0.025),'-45^{o}')
     
     plot(Center(1)+Diameter(1)*([-1 0]),Center(2)+Diameter(2)*([0 0]),'Color',c2);
     plot(Center(1)+Diameter(1)*(-1),Center(2)+Diameter(2)*(0),'.','Color',c2,'MarkerSize',14,'MarkerFaceColor',c2)
@@ -130,18 +118,6 @@ if ~isempty(conditionsID)
             plot(Center(1)+Diameter(1)*(x2),Center(2)+Diameter(2)*(y2+1),'.','Color',c1,'MarkerSize',14)
         end
     end
-    
-    %     if conditionsID == 10
-    %         plot(Center(1)+Diameter(1)*(-.0),Center(2)+Diameter(2)*(1),'o','Color',c1)
-    %         plot(Center(1)+Diameter(1)*(-.0),Center(2)+Diameter(2)*(1),'.w','MarkerSize',20)
-    %         plot(Center(1)+Diameter(1)*(-.0),Center(2)+Diameter(2)*(1),'o','Color',c1Highlighted)
-    %         plot(Center(1)+Diameter(1)*(-.0),Center(2)+Diameter(2)*(1),'.w','MarkerSize',20)
-    %         x = Center(1)+Diameter(1)*(-0.0);
-    %         y = 0;
-    %         plot([x x],Center(2)+Diameter(2)*[y+1  -0.3869],'--k')%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %         plot(x,Center(2)+Diameter(2)*( -0.3869),'vk','MarkerSize',8,'MarkerFaceColor',c1Highlighted)
-    %
-    %     else
     
     h12 = text(Center(1)+Diameter(1)*(xcorrectionW3),Center(2)+Diameter(2)*(.2),'W3','Color',[0 0 1]);%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     set(h12,'rotation',90)
@@ -172,20 +148,13 @@ if ~isempty(conditionsID)
                 plot(Center(1)+Diameter(1)*(x),Center(2)+Diameter(2)*(y+1),'o','linewidth',1.5,'Color',c1Highlighted)
                 plot(Center(1)+Diameter(1)*(x),Center(2)+Diameter(2)*(y+1),'.','MarkerSize',18,'Color',[1 1 1])
                 
-                %                 plot(Center(1)+Diameter(1)*(x),Center(2)+Diameter(2)*(y+1),'.','MarkerSize',20,'Color',c1Highlighted)
-                %                 plot(Center(1)+Diameter(1)*(x2),Center(2)+Diameter(2)*(y2+1),'.g','linewidth',1.2,'MarkerSize',22,'Color',c2Highlighted)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 plot(Center(1)+Diameter(1)*(x2),Center(2)+Diameter(2)*(y2+1),'o','linewidth',1.5,'Color',c2Highlighted)
                 plot(Center(1)+Diameter(1)*(x2),Center(2)+Diameter(2)*(y2+1),'.','MarkerSize',18,'Color',[1 1 1])
-                %                 ,'.g','linewidth',1.2,'MarkerSize',22,'Color',c2Highlighted)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                
-                
                 
             end
         end
     end
-    %     plot(Center(1)+Diameter(1)*(0.04),Center(2)+Diameter(2)*(1),'.','Color',c1,'MarkerSize',22)
-    %     plot(Center(1)+Diameter(1)*(-.04),Center(2)+Diameter(2)*(1),'o','Color',c1)
-    %     plot(Center(1)+Diameter(1)*(-.04),Center(2)+Diameter(2)*(1),'.w','MarkerSize',20)
+    
     if nform == 9
         plot(Center(1)+Diameter(1)*(0.04),Center(2)+Diameter(2)*(1),'.','Color',c2Highlighted,'MarkerSize',22)
         plot(Center(1)+Diameter(1)*(-.04),Center(2)+Diameter(2)*(1),'o','Color',c1Highlighted)
@@ -199,7 +168,6 @@ if ~isempty(conditionsID)
         plot(x,Center(2)+Diameter(2)*( -0.3869),'vk','MarkerSize',8,'MarkerFaceColor',c1Highlighted)
         plot(x2,Center(2)+Diameter(2)*( -0.3869),'vk','MarkerSize',8,'MarkerFaceColor',c2Highlighted)
     end
-    %     end
 else
     disp('Formation not recognized for visualization')
 end

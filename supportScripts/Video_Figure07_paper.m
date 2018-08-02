@@ -1,5 +1,27 @@
 function Video_Figure07_paper(out,basedOn,trail,ingThreshold)
+% VIDEO_FIGURE07_PAPER:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+% basedOn - contains the (string) reference measure that is compared:
+% - MPD = minimal predicted distance (or Distance at Closest approach * code is confirmed to work for MPD
+% - BA = the bearing angle
+% - ID = the intersection distance
+% - DGvel = the gradient of the dynamic gap
+% ingThreshold = which definition of opening and closing should be used (i.e., the minimum change required to label a trial as closING or openING)
+% if ingThreshold is 0 --> the previous definition of opening and closing
+% if it is any other number then that number corresponds to the last
+% percentage where an inverted DG occurred.
+% - trail = a boolean that indicates whether a trail should be plotted to indicate the trajectory.
+%
 
+%%
 darkRed = [170 0 0]/255;
 lightRed = [255 128 128]/255;
 
@@ -23,9 +45,7 @@ for i = 1:4
         if ~any(j == [10 11 30 31 50 51 70 71 90 91 110 111])
             if ~(i == 4 && j == 69)
                 if out{j,i}.formation(10) ~= .3 % exclude smallest diameter
-                    %                     if j == 18
-                    %                         disp('hi')
-                    %                     end
+                    
                     temp = out{j,i}.timeSeries;
                     temp2 = out{j,i}.universalTimeSeriesTend;
                     
@@ -76,7 +96,6 @@ for i = 1:4
                         mostPos = 57;
                     end
                     
-                    
                     MPD12{cr3}(:,curSP3) = temp2(:,2);
                     MPD13{cr3}(:,curSP3) = temp2(:,3);
                     
@@ -109,25 +128,6 @@ for i = 1:4
                     MPD13{cr3}(:,curSP3) = temp2(:,60);
                     MPDmin{cr3}(:,curSP3) = temp2(:,61);
                     
-                    %             BA12{cr3}(:,curSP3) = temp2(:,63);
-                    %             BA13{cr3}(:,curSP3) = temp2(:,64);
-                    %             BAmin{cr3}(:,curSP3) = temp2(:,65);
-                    
-                    % tempMPDs = abs(temp2(:,[2 3]));
-                    % [~,ind] = min(tempMPDs');
-                    % for qut = 1:1000
-                    % mult = 1;
-                    % if temp2(qut,2) > 0 && temp2(qut,3) < 0
-                    % % open
-                    % elseif temp2(qut,2) < 0 && temp2(qut,3) > 0
-                    % % open
-                    % else
-                    % % closed
-                    % mult = -1;
-                    % end
-                    % MPDmin{cr3}(qut,curSP3) = tempMPDs(qut, ind(qut))*mult;
-                    % end
-                    
                     ing = 0; % closING or openING
                     % MPD based - DG inversion
                     if strcmp(basedOn,'MPD')
@@ -148,7 +148,6 @@ for i = 1:4
                                 %                         '..ing'
                                 ing = 1; % closING or openING
                                 DGinv{cr3}(curSP3) = 1;
-%                                 disp([i j])
                                 
                             end
                             
@@ -170,7 +169,6 @@ for i = 1:4
                         end
                     end
                     
-                    
                     Gap0_oc{cr}(:,curSP) = temp2(:,55); % oc = open closed
                     Gap2_oc{cr}(:,curSP) = temp2(:,mostPos); % oc = open closed
                     Gap3_oc{cr}(:,curSP) = temp2(:,mostNeg); % oc = open closed
@@ -186,7 +184,6 @@ for i = 1:4
         end
     end
 end
-% end
 
 % through (and opening)
 ninv = sum([DGinv{2} ] == 0);
@@ -207,7 +204,9 @@ nClosing = inv;
 nClosed = ninv;
 
 time = temp2(:,58);
-
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 filename = ['Vid02_DGevolution_Fig07_' basedOn];
 writerObj = VideoWriter(['Figs\' filename '.avi']); % Name it.
 writerObj.FrameRate = 24; % How many frames per second.
@@ -217,11 +216,9 @@ tstart = 1;
 tend = 1000;
 
 h39 = figure(39);hold off
-% for frameTemp = tstart :    100/writerObj.FrameRate    :  tend
 frameTemp = tstart;
 while frameTemp < tend
     frameTemp = frameTemp + 100/writerObj.FrameRate;
-    %     for frameTemp = tstart :    (tend-tstart+1)/writerObj.FrameRate    :  tend
     if (frameTemp + 100/writerObj.FrameRate) > tend
         frameTemp = tend;
     end
@@ -264,24 +261,11 @@ while frameTemp < tend
     plot(plotVar1{1}(curFrame,DGinv{1} == 1),plotVar2{1}(curFrame,DGinv{1} == 1),'.','MarkerSize',6,'Color',[1 1 1]);hold on;
     plot(plotVar1{2}(curFrame,DGinv{2} == 1),plotVar2{2}(curFrame,DGinv{2} == 1),'.','MarkerSize',6,'Color',[1 1 1])
     plot(plotVar1{3}(curFrame,DGinv{3} == 1),plotVar2{3}(curFrame,DGinv{3} == 1),'.','MarkerSize',6,'Color',[1 1 1])
-    %     elseif strcmp(basedOn,'ID')
-    %         plot(Gap2_fcb_unsorted{1}(curFrame,:),Gap3_fcb_unsorted{1}(curFrame,:),'.r');hold on;
-    %         plot(Gap2_fcb_unsorted{2}(curFrame,:),Gap3_fcb_unsorted{2}(curFrame,:),'.g')
-    %         plot(Gap2_fcb_unsorted{3}(curFrame,:),Gap3_fcb_unsorted{3}(curFrame,:),'.r')
-    %
-    %         if trail == 1 && curFrame ~= 1
-    %             plot(Gap2_fcb_unsorted{1}(prevFrame:curFrame,:),Gap3_fcb_unsorted{1}(prevFrame:curFrame,:),'r','LineWidth',.6);hold on;
-    %             plot(Gap2_fcb_unsorted{2}(prevFrame:curFrame,:),Gap3_fcb_unsorted{2}(prevFrame:curFrame,:),'g','LineWidth',.6)
-    %             plot(Gap2_fcb_unsorted{3}(prevFrame:curFrame,:),Gap3_fcb_unsorted{3}(prevFrame:curFrame,:),'b','LineWidth',.6)
-    %         end
     
-    % end
     xlabel('\itID_{12}\rm (m)')
     ylabel('\itID_{13}\rm (m)')
     
     curTime = round(time(curFrame));
-    %     ht1 = text(4,4.5,'Time');
-    %     ht2 = text(4,4,[num2str(curTime) '%']);
     
     ht1 = title([num2str(curTime) '%']);
     axis([-6 6 -6 6])
@@ -314,7 +298,6 @@ while frameTemp < tend
     
     yt = yt - 1;
     plot(6.4,yt,'o','Color',darkGreen ,'MarkerSize',9,'clipping','off','LineWidth',2)
-    %     plot(6.4,yt,'o','Color',darkGreen ,'MarkerSize',12,'clipping','off')
     
     text(6.7,yt,'Inversion','clipping','off')
     yt = yt - .8;
@@ -322,10 +305,9 @@ while frameTemp < tend
     
     yt = yt - 2;
     text(6.4,yt,'Closed','clipping','off')
-
+    
     yt = yt - 1;
     plot(6.4,yt,'o','Color',darkRed ,'MarkerSize',9,'clipping','off','LineWidth',2)
-    %     plot(6.4,yt,'o','Color',darkRed ,'MarkerSize',12,'clipping','off')
     
     text(6.7,yt,'Inversion','clipping','off')
     yt = yt - .8;
@@ -347,19 +329,12 @@ while frameTemp < tend
     
     set(h39, 'ToolBar', 'none');
     
-    %     winsize(1:2) = [0 0];
-    %if mod(i,4)==0, % Uncomment to take 1 out of every 4 frames.
     movegui(h39)
     frame = getframe(h39); % 'gcf' can handle if you zoom in to take a movie.
     writeVideo(writerObj, frame);
     delete(ht1)
-    %     delete(ht2)
 end
 close(h39)
 close(writerObj); % Saves the movie.
-
-
-
-
 
 end

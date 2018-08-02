@@ -1,13 +1,32 @@
+function DG = Figure08_reportDG(out,basedOn,comparison,alphaCorrectie,ingThreshold,varargin)
+% FIGURE08_REPORTDG:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
 % Comparison indicates which colours are maintained and which are turned to
 % black and white.
-
-% varargin (DGvelYes) can be 0 => DG, 1 => DGvel, 2 => betadot
-
-% to do next: swap cooc for 'sim' 'seq' based on when the gap opens/closes.
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+% basedOn - contains the (string) reference measure that is compared:
+% - MPD = minimal predicted distance (or Distance at Closest approach * code is confirmed to work for MPD
+% - BA = the bearing angle
+% - ID = the intersection distance
+% - DGvel = the gradient of the dynamic gap
+% comparison = an integer that specifies which trials are compared (closed, closing, opened, opening)
+% alphaCorrectie = the number of multiple comparisons for which alpha needs to be corrected
+% ingThreshold = which definition of opening and closing should be used (i.e., the minimum change required to label a trial as closING or openING)
+% varargin = (DGvelYes) can be 0 => DG, 1 => DGvel, 2 => betadot
+%
 % if ingThreshold is 0 --> the previous definition of opening and closing
 % if it is any other number then that number corresponds to the last
 % percentage where an inverted DG occurred.
-function DG = Figure08_reportDG(out,basedOn,comparison,alphaCorrectie,ingThreshold,varargin)
+
+%%
 plotAsLog = 0;
 if nargin > 5
     DGvelYes = varargin{1};
@@ -187,27 +206,9 @@ for i = 1:4
                     MPD13{cr3}(:,curSP3) = temp2(:,60);
                     MPDmin{cr3}(:,curSP3) = temp2(:,61);
                     
-                    %                  sqrt(sum( [temp2(:,59) temp2(:,60)] .^2,2))
-                    %                 DGvel{cr3}(:,curSP3) =                  sqrt(sum( [temp2(:,59) temp2(:,60)] .^2,2));
                     
-                    % tempMPDs = abs(temp2(:,[2 3]));
-                    % [~,ind] = min(tempMPDs');
-                    % for qut = 1:1000
-                    % mult = 1;
-                    % if temp2(qut,2) > 0 && temp2(qut,3) < 0
-                    % % open
-                    % elseif temp2(qut,2) < 0 && temp2(qut,3) > 0
-                    % % open
-                    % else
-                    % % closed
-                    % mult = -1;
-                    % end
-                    % MPDmin{cr3}(qut,curSP3) = tempMPDs(qut, ind(qut))*mult;
-                    % end
-%                     if j == 18
-%                         disp('hi')
-%                     end
                     ing = 0; % closING or openING
+                    
                     % MPD based - DG inversion
                     if strcmp(basedOn,'MPD')
                         DGinv{cr3}(curSP3) = 0;
@@ -227,7 +228,7 @@ for i = 1:4
                                 %                         '..ing'
                                 ing = 1; % closING or openING
                                 DGinv{cr3}(curSP3) = 1;
-%                                 disp([i j])
+                                %                                 disp([i j])
                             end
                             
                         end
@@ -280,35 +281,12 @@ for i = 1:4
                     nSwitch{cooc}(1,curSP4) = out{j,i}.nDGswitch;
                     DG_MPD_cooc{cooc}(:,curSP4) =  temp2(:,61);%tempMPDs(qut, ind(qut))*mult; % cooc = closing open opening closed
                     DG_ID_cooc{cooc}(:,curSP4) = temp2(:,55); % cooc = closing open opening closed
-%                                     DG_BA_cooc{cooc}(:,curSP4) = temp2(:,65);
+                    %                                     DG_BA_cooc{cooc}(:,curSP4) = temp2(:,65);
                     time = out{j,i}.universalTimeSeriesTend(:,39);
                     
                     tmp = velocity_vector([temp2(:,59) temp2(:,60)],time);
                     DGvel{cooc}(:,curSP4) =  sqrt(sum( tmp .^2,2));
-                    %                 DGvel{cooc}(:,curSP4) =  abs([temp2(2:end,61) - temp2(1:end-1,61); temp2(end,61)-temp2(end-1,61)];
                     
-                    
-                    
-                    %
-                    % % % %                                 tmp = abs(temp2(:,63)); % beta dot
-                    % % % %                 %                 test = boxplot(sort(tmp)');
-                    % % % %                 %                 hb = boxplot(test,'whisker', 1.5);
-                    % % % %                                  tmp2 = gradient(tmp); % beta dot dot
-                    % % % %                                                hb = boxplot(tmp2);
-                    % % % %
-                    % % % %                 hOutliers = findobj(hb,'Tag','Outliers');
-                    % % % %                 Youtliers = get(hOutliers,'YData');
-                    % % % %                 tmp77 = [];
-                    % % % %                 for ii = 1:length(Youtliers)
-                    % % % %                 tmp77(ii) = find(Youtliers(ii) == tmp2);
-                    % % % %                 end
-                    % % % %                 % yy =
-                    % % % %                                 tmp99 = quantile(abs(tmp2),4);
-                    % % % %                                 tmp88 = tmp2(abs(tmp2)<=tmp99(4));
-                    % % % %                                 threshold = nanmean(tmp88)+10*nanstd(tmp88);
-                    % % % %                 %                 tmp77 = find(abs(tmp2)>threshold);
-                    % % % %
-                    % % % %
                     mult = abs(temp2(end,63)) / temp2(end,63);
                     tmp = (temp2(:,63)) .* mult;
                     tmp3 = tmp;
@@ -374,56 +352,9 @@ for i = 1:4
                         title('new and filled')
                     end
                     
-                    % % % % %                 tmp = abs(temp2(:,63));
-                    % % % % %                 tmp3 = tmp;
-                    % % % % %                 tmp2 = gradient(tmp);
-                    % % % % %
-                    % % % % %                 tmp99 = quantile(abs(tmp2),4);
-                    % % % % %                 tmp88 = tmp2(abs(tmp2)<=tmp99(4));
-                    % % % % %                 threshold = nanmean(tmp88)+10*nanstd(tmp88);
-                    % % % % %                 %                 tmp2(abs(tmp2)>(nanmean(abs(tmp2))+3*nanstd(abs(tmp2)))) = NaN;
-                    % % % % % %                 tmp2(abs(tmp2)>threshold) = NaN;
-                    % % % % %                 tmp77 = find(abs(tmp2)>threshold);
-                    % % % % %
-                    % % % % %
-                    % % % % %                 figure(10);hold off
-                    % % % % %                 subplot(3,1,1);hold off
-                    % % % % %                 plot(tmp);hold on;
-                    % % % % %                 vline(find(tmp>nanmean(tmp)*10));
-                    % % % % %
-                    % % % % %                 subplot(3,1,2);hold off
-                    % % % % %                 plot(tmp2,'b');hold on
-                    % % % % %                 hline((threshold));
-                    % % % % %
-                    % % % % %                 tmp(tmp>nanmean(tmp)*10) = NaN;
-                    % % % % %                 cutoff = 0.1;
-                    % % % % %                 f = cutoff *2/ (120);
-                    % % % % %                 tmp = fillGaps(tmp);
-                    % % % % %                 tmp3 = fillGaps(tmp3);
-                    % % % % %
-                    % % % % %                 subplot(3,1,3);hold off
-                    % % % % %                 plot(tmp,'--b');hold on
-                    % % % % %                 plot(tmp3,'--k');
-                    % % % % %                 tmp = filtrateTraj((tmp)',f,1);
-                    % % % % %                 tmp3 = filtrateTraj((tmp3)',f,1);
-                    % % % % %                 %                                 tmp6 = filtrateTraj((tmp2)',f,1);
-                    % % % % %
-                    % % % % %                 plot(tmp,':r')
-                    % % % % %                 plot(tmp3,':k')
-                    % % % % %
-                    %                 logCorrection = 0;
-                    %                 if logCorrection == 0
                     
                     BetaDot{cooc}(:,curSP4) = (tmp3);
-                    %                 else
-                    % %                     logdis = tmp3+0.001333021513084;
-                    %                     logdis = tmp3+7.578094700800933;
-                    %                     if any(logdis < 0)
-                    %                         disp('oh')
-                    %                     end
-                    %                     BetaDot{cooc}(:,curSP4) = log(logdis);
-                    %                 end
-                    %
+                    
                     Gap0_fcb{cr3}(:,curSP3) = temp2(:,55); % fcb = front crossed behind
                     Gap2_fcb{cr3}(:,curSP3) = temp2(:,mostPos); % fcb = front crossed behind
                     Gap3_fcb{cr3}(:,curSP3) = temp2(:,mostNeg); % fcb = front crossed behind
@@ -470,16 +401,7 @@ for cr = 1:4
     end
     jbfill(time',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.5);
     
-    %     figure(16);
-    %     plot(time(t0:t100-0),BetaDot_av{cr},'Color',[0 0 0],'LineStyle',lStyle{cr},'LineWidth',1.1);hold on
-    %     y1 = BetaDot_av{cr}+BetaDot_se{cr};
-    %     y2 = BetaDot_av{cr}-BetaDot_se{cr};
-    %     jbfill(time(t0:t100-0)',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.5);
 end
-
-% figure()
-% plot(BetaDot{1})
-
 
 xlabel('Time (%)')
 if strcmp(basedOn,'ID')
@@ -520,12 +442,6 @@ elseif strcmp(basedOn,'MPD')
     axis([0 100 YVals])
     
     
-    % elseif strcmp(basedOn,'BA')
-    %            YVals = [-1.4 1.4];
-    %  axis([0 100 -1.4 1.4])
-    %     set(gca,'YTick',[-1 -.5 0 .5 1]);
-    %     why1 = 1.62;
-    %     why2 = 1.56;
 end
 yl = ylabel(yString);
 if DGvelYes ~= 0
@@ -542,11 +458,6 @@ why1 = YVals(1)+(1.4+1.62)/YCorrection;
 set(gca,'XTick',[0 25 50 75 100]);
 figure(15)
 box off
-% h_legend = legend([titleText{2} ' (\itn\rm = ' num2str(DG_n{1}) ')'], ...
-%     [titleText{1} ' (\itn\rm = ' num2str(DG_n{2}) ') (*)'], ...
-%     [titleText{3} ' (\itn\rm = ' num2str(DG_n{3}) ') (\Delta)'], ...
-%     'Location','East');
-% legend('boxoff')
 
 % Plot significant differences
 alphaLevel = 0.05/alphaCorrectie; % manual bonferroni correction
@@ -634,8 +545,6 @@ if comparison ~= 0
                     else
                         tend =  tmp2(i);
                     end
-                    
-                    
                 end
                 
                 plot([time(tstart) time(tstart)],[frameWHY(1)-.15/YCorrection frameWHY(1)+.15/YCorrection],'-k', 'LineWidth', 1.6,'clipping','off');
@@ -645,9 +554,7 @@ if comparison ~= 0
                 disp(['Different from ' num2str(time(tstart)) ' until ' num2str(time(tend)) '%'])
                 
             else
-                %                     if length(tmp2) > 2
-                %                         error('script not designed to cope with more than 2 periods of significance')
-                %                     end
+                
                 tstart = tmp2(i);
                 if length(tmp2) < i+1
                     tend = length(frameDiff);
@@ -663,61 +570,7 @@ if comparison ~= 0
             end
         end
     end
-    %         if i == 1
-    %
-    %             plot([time(1) time(tmp2(i))],[frameWHY(1) frameWHY(1)],'-k','LineWidth',1.6);
-    %         else
-    %             plot([time(1) time(tmp2(i))],[frameWHY(1) frameWHY(1)],'-k','LineWidth',1.6);
-    %
-    %         end
-    %     end
-    % else
-    %     % different at the start
-    %
-    % end
-    %     firstDiff = find(frameDiff == 1,1,'first');
-    %     lastDiff = find(frameDiff == 1,1,'last');
-    %
-    %
-    %     plot([time(firstDiff) time(firstDiff)],[frameWHY(1)-.15 frameWHY(1)+.15],'-k', 'LineWidth', 1.6,'clipping','off');
-    %     plot([time(lastDiff) time(lastDiff)],[frameWHY(1)-.15 frameWHY(1)+.15],'-k', 'LineWidth', 1.6,'clipping','off')
-    %     l=      plot(time(frameDiff),frameWHY(frameDiff),'-k', 'LineWidth', 1.6);
-    %     set(l,'clipping','off')
-    %     text( time(round(1.0*(((lastDiff - firstDiff) / 2) + firstDiff-1))),frameWHY(1)+.15,'*','Color',[0 0 0],'FontSize',14,'HorizontalAlignment','Center')
-    
-    % % opening vs closed
-    
-    
-    % options   = struct('two_tailed',1);
-    % SPM = spm1d_stats_ttest2(d1, d2);
-    % SPMi = spm1d_inference(SPM, alphaLevel, options);
-    % frameDiff = abs(SPMi.z) > SPMi.zstar;
-    % [~,maxz] = max(abs(SPMi.z));
-    
-    % disp(['SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', p = ' num2str(SPMi.p)])
-    
-    % frameWHY(1:1000) = why2;
-    % firstDiff = find(frameDiff == 1,1,'first');
-    % lastDiff = find(frameDiff == 1,1,'last');
-    
-    % % % plot([time(firstDiff) time(firstDiff)],[frameWHY(1) frameWHY(1)-.15],'LineStyle',lStyle{3},'Color',colorSpecGrey(3,:), 'LineWidth', 1.6,'clipping','off')
-    % % % plot([time(lastDiff) time(lastDiff)],[frameWHY(1) frameWHY(1)-.15],'LineStyle',lStyle{3},'Color',colorSpecGrey(3,:), 'LineWidth', 1.6,'clipping','off')
-    
-    % % % l= plot( time(frameDiff),frameWHY(frameDiff),'LineStyle',lStyle{3},'Color',colorSpecGrey(3,:), 'LineWidth', 1.6);hold on;
-    % % % set(l,'clipping','off')
-    % % % text( time(round(.93*(((lastDiff - firstDiff) / 2) + firstDiff-1))),frameWHY(1)+.24,'\Delta','Color',colorSpecGrey(3,:),'FontSize',9,'HorizontalAlignment','Center')
-    
-    
 end
-
-% % frequency number of switches
-% for q = 1:4
-%
-%     nSwitch{q}
-%
-% end
-
-
 
 % total
 ninv = sum([DGinv{1} DGinv{2} DGinv{3}] == 0);
@@ -777,15 +630,15 @@ if strcmp(basedOn,'ID')
     pos(3) = .87;
     pos(4) = .75;
 elseif strcmp(basedOn,'MPD')
-    pos(1) = .08; % ondergrens horizontal
-    pos(2) = .15; % ondergrens vertical
-    pos(3) = .72; % bovengrens horizontal
-    pos(4) = .718; % bovengrens horizontal
+    pos(1) = .08; % lower limit horizontal
+    pos(2) = .15; % lower limit vertical
+    pos(3) = .72; % upper limit horizontal
+    pos(4) = .718; % upper limit horizontal
 elseif strcmp(basedOn,'BA')
-    pos(1) = .08; % ondergrens horizontal
-    pos(2) = .15; % ondergrens vertical
-    pos(3) = .72; % bovengrens horizontal
-    pos(4) = .718; % bovengrens horizontal
+    pos(1) = .08; % lower limit horizontal
+    pos(2) = .15; % lower limit vertical
+    pos(3) = .72; % upper limit horizontal
+    pos(4) = .718; % upper limit horizontal
 end
 
 
@@ -795,7 +648,6 @@ if comparison ~= 0
 end
 disp(' ')
 
-% filename5 = [depVar{2} '_' summ{2} '_' cond{2} '_' tim{2} '_' fact{2}];
 filename5 = 'Fig08_MPI_Paper_cooc';
 if DGvelYes == 1
     filename5 = 'Fig08_MPI_Paper_cooc_DGvel';
@@ -811,8 +663,10 @@ end
 if ingThreshold ~= 0
     filename5 = [filename5 '_newIng'];
 end
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 print( h15, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '.tiff']) % here you can specify filename extensions
-
 
 % and add a plot for individual trials
 % maybe change YVals?
@@ -852,25 +706,19 @@ print( h16, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '_ALL
         x1 = [102.5 107.5];
         x2 = 110;
         x3 = 115;
-        % cr = 0;
         
         yt = (YVals(1)+1.4+1.3)/YCorrection;
         yt = YVals(1)+(1.4+1.3)/YCorrection;
         
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;
-        % cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
         rectangle('Position',[x1(1) yt-.1/YCorrection 5 .2/YCorrection],'FaceColor',colorSpecGrey(2,:),'EdgeColor',colorSpecGrey(2,:),'Clipping','off')
         plot([x1(1) x1(1)+5],[yt yt],'k','LineStyle',lStyle{2},'clipping','off')
-        % plot(x1,yt,'.','Color',lightGreen,'clipping','off','MarkerSize',13)
+        
         text(x2,yt,'Open','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt,['(\itn\rm = ' num2str(nOpen) ')'],'clipping','off')
         
         yt = yt - .3/YCorrection;
         y1(1:2) = yt-.1/YCorrection;y2(1:2) = yt+.1/YCorrection;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'o','Color',darkGreen ,'MarkerSize',4,'clipping','off')
         rectangle('Position',[x1(1) yt-.1/YCorrection 5 .2/YCorrection],'FaceColor',colorSpecGrey(3,:),'EdgeColor',colorSpecGrey(3,:),'Clipping','off')
         plot([x1(1) x1(1)+5],[yt yt],'k','LineStyle',lStyle{3},'clipping','off')
         text(x2,yt,'Opening','clipping','off')
@@ -882,9 +730,6 @@ print( h16, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '_ALL
         
         rectangle('Position',[x1(1) yt-.1/YCorrection 5 .2/YCorrection],'FaceColor',colorSpecGrey(1,:),'EdgeColor',colorSpecGrey(1,:),'Clipping','off')
         plot([x1(1) x1(1)+5],[yt yt],'k','LineStyle',lStyle{1},'clipping','off')
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'-','Color',darkRed ,'MarkerSize',4,'clipping','off')
         text(x2,yt,'Closing','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt,['(\itn\rm = ' num2str(nClosing) ')'],'clipping','off')
@@ -892,9 +737,6 @@ print( h16, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '_ALL
         yt = yt - .3/YCorrection;
         rectangle('Position',[x1(1) yt-.1/YCorrection 5 .2/YCorrection],'FaceColor',colorSpecGrey(4,:),'EdgeColor',colorSpecGrey(4,:),'Clipping','off')
         plot([x1(1) x1(1)+5],[yt yt],'k','LineStyle',lStyle{4},'clipping','off')
-        % y1(1:2) = yt-.1;y2(1:2) = yt+.1;cr = cr +1 ;
-        % jbfill(x1',y2',y1',colorSpecGrey(cr,:),colorSpecGrey(cr,:),1,.25);
-        % plot(x1,yt,'.','Color',lightRed,'clipping','off','MarkerSize',13)
         text(x2,yt,'Closed','clipping','off')
         yt = yt - .2/YCorrection;
         text(x3,yt,['(\itn\rm = ' num2str(nClosed) ')'],'clipping','off')

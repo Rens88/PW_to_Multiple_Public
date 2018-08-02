@@ -1,4 +1,16 @@
 function Video_Figure03_presentation(out)
+% VIDEO_FIGURE03_PRESENTATION:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% out - contains the data from PW_to_Multiple_Public.mat
+
+%%
 fontsize = 16;
 set(0,'defaultaxesfontsize',fontsize);set(0,'defaulttextfontsize',fontsize);
 set(0,'defaultaxesfontname','Gill Sans MT');set(0,'defaulttextfontname','Gill Sans MT');
@@ -28,6 +40,9 @@ MPD12(tend_w2:end) = MPD12(tend_w2);
 ID12(tend_w2:end) = ID12(tend_w2);
 
 filename = ['Fig03_ExplanationVideo'];
+if exist('Figs') ~= 7
+    disp('WARNING: Could not find folder <Figs>')
+end
 writerObj = VideoWriter(['Figs\' filename '.avi']); % Name it.
 writerObj.FrameRate = 24; % How many frames per second.
 open(writerObj);
@@ -36,11 +51,11 @@ tstart = 1;
 tend = 100;
 
 h39 = figure(39);hold off
-% for frameTemp = tstart :    100/writerObj.FrameRate    :  tend
+
 frameTemp = tstart;
 while frameTemp < tend
     frameTemp = frameTemp + 10/writerObj.FrameRate;
-    %     for frameTemp = tstart :    (tend-tstart+1)/writerObj.FrameRate    :  tend
+    
     if (frameTemp + 15/writerObj.FrameRate) > tend
         frameTemp = tend;
     end
@@ -55,19 +70,14 @@ while frameTemp < tend
     
     createThePlot()
     
-    %     plot(time(1:curFrame),MPD12(1:curFrame))
-    %     axis([0 100 -2 2])
     winsize = get(h39,'Position');
     set(h39, 'MenuBar', 'none');
     
     set(h39, 'ToolBar', 'none');
     
-    %     winsize(1:2) = [0 0];
-    %if mod(i,4)==0, % Uncomment to take 1 out of every 4 frames.
     frame = getframe(h39,winsize); % 'gcf' can handle if you zoom in to take a movie.
     writeVideo(writerObj, frame);
-    %     delete(ht1)
-    %     delete(ht2)
+    
 end
 
 for qt = 1:36 % add one and a half more seconds without movement
@@ -78,19 +88,15 @@ end
 close(h39)
 close(writerObj); % Saves the movie.
 
-
     function createThePlot()
         
         % the plots
-        %         sb1 = subplot(2,3,1);    hold off
         sb1 = subplot(2,3,4);    hold off
         
         plot(time(1:tend_w2),MPD12(1:tend_w2),'b','LineWidth',2);hold on
         plot(time,MPD13,'r','LineWidth',2)
         plot(time(tend_w2+1:end),MPD12(tend_w2+1:end),':b','LineWidth',2);hold on
-        %         if         frameTemp == tend
         rectangle('Position',[frameTemp -1.99 100.001-frameTemp 3.99],'FaceColor',[1 1 1],'EdgeColor',[1 1 1])
-        %         end
         
         hline(0,'k');
         axis([0 100 -2 2])
@@ -102,8 +108,6 @@ close(writerObj); % Saves the movie.
         l1 = legend('\itMPD\rm_{12}','\itMPD\rm_{13}','Location','NorthEast');
         legend('boxoff')
         
-        
-        %         sb2 = subplot(2,3,2);    hold off
         sb2 = subplot(2,3,5);    hold off
         
         plot(time(1:tend_w2),ID12(1:tend_w2),'b','LineWidth',2);hold on
@@ -138,8 +142,6 @@ close(writerObj); % Saves the movie.
         l2 = legend('\itID\rm_{12}','\itID\rm_{13}','Location','NorthEast');
         legend('boxoff')
         
-        
-        
         %         sb3 = subplot(2,3,3);    hold off
         sb3 = subplot(2,3,6);    hold off
         
@@ -172,7 +174,7 @@ close(writerObj); % Saves the movie.
             tstart2 = tend2+1;
             
         end
-        %         if         frameTemp == tend
+        
         rectangle('Position',[frameTemp -1.99 100.001-frameTemp 3.99],'FaceColor',[1 1 1],'EdgeColor',[1 1 1])%         end
         
         
@@ -184,8 +186,6 @@ close(writerObj); % Saves the movie.
         ylabel('\itDG\rm (m)')
         box off
         
-        
-        %         sb4 = subplot(2,3,4.2:5.95);    hold off
         sb4 = subplot(2,3,1.2:2.95);    hold off
         
         plot(p1(1:curFrame*10,1),p1(1:curFrame*10,2),'k','LineWidth',2);hold on
@@ -199,31 +199,17 @@ close(writerObj); % Saves the movie.
         xlabel('X - position (m)')
         ylabel('Y - position (m)')
         axis([-6 6 -6 6])
-        %         get(sb4,'pos')
-        %         set(sb4,'Position',[    0.3202862    0.0800    0.382    0.3812])
+        
         set(sb4,'Position',[    0.3402862    0.5800    0.382    0.412])
         
-        %         pos =     [0.2219+.02    0.87944    0.1536    0.1000];
         pos =     [0.2219+.01    0.37944    0.1536    0.1000];
         
         set(l1,'Position',pos)
-        %         pos =     [    0.5237+.02    0.87944    0.1321    0.1000];
+        
         pos =     [    0.5237+.01    0.37944    0.1321    0.1000];
         
         set(l2,'Position',pos)
-        %
-        %         pos =     [0.1347-.08    0.1100+.04    0.2039+.03    0.79150];
-        %         set(sb1,'Position',pos)
-        %         pos =     [0.4155-.02    0.1100+.04    0.2039+.03    0.79150];
-        %         set(sb2,'Position',pos)
-        %         pos =     [0.6963+.04    0.1100+.04   0.2039+.03    0.79150];
-        %         set(sb3,'Position',pos)
-        %
-        
         
     end
-
-
-
 
 end
