@@ -698,7 +698,7 @@ manualLegend()
 box off
 set(gca, 'Position', pos)
 
-print( h16, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '_ALLtrials.tiff']) % here you can specify filename extensions
+print( h16, '-r300' ,'-dtiff' ,[fpath filesep filename5 '_' basedOn '_' compString '_ALLtrials.tiff']) % here you can specify filename extensions
 
 
     function manualLegend()
