@@ -75,13 +75,13 @@ while frameTemp < tend
     
     set(h39, 'ToolBar', 'none');
     
-    frame = getframe(h39,winsize); % 'gcf' can handle if you zoom in to take a movie.
+    frame = getframe(h39); % 'gcf' can handle if you zoom in to take a movie.
     writeVideo(writerObj, frame);
     
 end
 
 for qt = 1:36 % add one and a half more seconds without movement
-    frame = getframe(h39,winsize); % 'gcf' can handle if you zoom in to take a movie.
+    frame = getframe(h39); % 'gcf' can handle if you zoom in to take a movie.
     writeVideo(writerObj, frame);
 end
 
