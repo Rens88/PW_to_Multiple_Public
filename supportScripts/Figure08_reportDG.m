@@ -619,7 +619,7 @@ nClosing = inv;
 nClosed = ninv;
 
 
-fpath =  'Figs\';
+fpath =  'Figs';
 manualLegend()
 
 pos = get(gca, 'Position');
@@ -666,7 +666,7 @@ end
 if exist('Figs') ~= 7
     disp('WARNING: Could not find folder <Figs>')
 end
-print( h15, '-r300' ,'-dtiff' ,[fpath filename5 '_' basedOn '_' compString '.tiff']) % here you can specify filename extensions
+print( h15, '-r300' ,'-dtiff' ,[fpath filesep filename5 '_' basedOn '_' compString '.tiff']) % here you can specify filename extensions
 
 % and add a plot for individual trials
 % maybe change YVals?

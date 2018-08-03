@@ -68,10 +68,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Load data and add library
 addpath('supportScripts')
-addpath('supportScripts\SPM')
-load('data\PW_to_Multiple_Public.mat')
+
+addpath(['supportScripts' filesep 'SPM'])
+load(['data' filesep 'PW_to_Multiple_Public.mat'])
 % Create a folder to store the figures if it doesn't already exist
-if exist('Figs') ~= 7
+if ~exist('Figs','dir')
+    disp('NOTE: There was no <Figs> folder, so it was created automatically.')
+    disp('All plots are stored in this folder:')
+    disp([cd filesep 'Figs'])
     mkdir('Figs')
 end
 

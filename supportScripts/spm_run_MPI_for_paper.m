@@ -59,10 +59,9 @@ elseif strcmp(curString.form,'4m_-45deg')
     sb = row_m45deg*3 -0;
 end
 
-tempFigDir =  'Figs\';
+tempFigDir =  'Figs';
 if exist(tempFigDir,'dir') ~= 7
-    disp('NOTE: There was no <\Figs\temp> folder, so it was created autmatically.')
-    disp('All plots are stored in this folder.')
+    disp('WARNING: Could not find folder <Figs>')
     mkdir(tempFigDir)
 end
 
@@ -265,7 +264,7 @@ if strcmp(curString.form,'4m_045deg') && strcmp(curString.refPp,'W3') % last one
         corString = '_corrected';
     end
     filename = 'Fig05_all_formation_for_paper';
-    print(figHandle, '-dtiff', '-r300', [tempFigDir filename corString '.tiff'])
+    print(figHandle, '-dtiff', '-r300', [tempFigDir filesep filename corString '.tiff'])
     
     close(figHandle)
 end

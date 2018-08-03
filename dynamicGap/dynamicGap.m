@@ -1,6 +1,6 @@
+function out = dynamicGap(p1,p2,p3,time,lastFrame_interactions)
+% DYNAMICGAP:
 % Collision avoidance with multiple walkers: Sequential or simultaneous interactions?
-%
-%
 %
 % Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
 %
@@ -35,12 +35,8 @@
 % i.e., the min(gap12,gap13)
 % - DG_pct --> The percentage that each walker contributed to the gap. (not
 % included in the publication)
-%
-%
-%
 
-function out = dynamicGap(p1,p2,p3,time,lastFrame_interactions)
-
+%%
 % analysis stops after Pp1 has crossed both intersections
 tend = max([lastFrame_interactions(1) lastFrame_interactions(2)]);
 

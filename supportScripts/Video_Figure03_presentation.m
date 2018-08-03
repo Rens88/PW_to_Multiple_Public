@@ -43,7 +43,7 @@ filename = ['Fig03_ExplanationVideo'];
 if exist('Figs') ~= 7
     disp('WARNING: Could not find folder <Figs>')
 end
-writerObj = VideoWriter(['Figs\' filename '.avi']); % Name it.
+writerObj = VideoWriter(['Figs' filesep filename '.avi']); % Name it.
 writerObj.FrameRate = 24; % How many frames per second.
 open(writerObj);
 

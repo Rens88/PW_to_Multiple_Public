@@ -165,12 +165,12 @@ set(sb2,'Position',pos)
 pos =     [0.6963+.04    0.1100+.04   0.2039+.03    0.79150];
 set(sb3,'Position',pos)
 
-if exist('Figs') ~= 7
+if ~exist('Figs','dir')
     disp('WARNING: Could not find folder <Figs>')
 end
 
-fpath =  'Figs\';
+fpath =  'Figs';
 filename = 'Fig03_examplarGap_MPD_ID_DG';
-print( h, '-r300' ,'-dtiff' ,[fpath filename '.tiff']) % here you can specify filename extensions
+print( h, '-r300' ,'-dtiff' ,[fpath filesep filename '.tiff']) % here you can specify filename extensions
 
 end

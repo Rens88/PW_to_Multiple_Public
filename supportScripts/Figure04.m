@@ -78,11 +78,11 @@ set(xp,'Pos',px)
 py = [  -11.4691+1.1    0.0000   -1.0000];
 set(yp,'Pos',py)
 
-if exist('Figs') ~= 7
+if ~exist('Figs','dir')
     disp('WARNING: Could not find folder <Figs>')
 end
-fpath =  'Figs\';
-print( h12, '-r300' ,'-dtiff' ,[fpath 'Fig04_gapexplanationSampleData.tiff']) % here you can specify filename extensions
+fpath =  'Figs';
+print( h12, '-r300' ,'-dtiff' ,[fpath filesep 'Fig04_gapexplanationSampleData.tiff']) % here you can specify filename extensions
 
 
 fontsize = 9;

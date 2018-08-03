@@ -169,11 +169,11 @@ set(l2,'visible','off')
 set(l3,'visible','off')
 
 set(gcf, 'Units', 'Centimeters', 'OuterPosition', [5,5, 20, 10]);
-if exist('Figs') ~= 7
+if ~exist('Figs','dir')
     disp('WARNING: Could not find folder <Figs>')
 end
-fpath =  'Figs\';
+fpath =  'Figs';
 
-print( fid, '-r300' ,'-dtiff' ,[fpath 'Fig02_timingExplanation.tiff']) % here you can specify filename extensions
+print( fid, '-r300' ,'-dtiff' ,[fpath filesep 'Fig02_timingExplanation.tiff']) % here you can specify filename extensions
 
 end

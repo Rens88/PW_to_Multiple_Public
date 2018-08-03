@@ -292,9 +292,9 @@ set(gca,'Position',pos)
 if exist('Figs') ~= 7
     disp('WARNING: Could not find folder <Figs>')
 end
-fpath = 'Figs\';
+fpath = 'Figs';
 
-print( h39, '-r300' ,'-dtiff' ,[fpath 'Fig07_DGsorted_' basedOn '.tiff']) % here you can specify filename extensions
+print( h39, '-r300' ,'-dtiff' ,[fpath filesep 'Fig07_DGsorted_' basedOn '.tiff']) % here you can specify filename extensions
 
     function manualLegend()
         x1 = [XVals(1)+(6+6.4)/XCorrection .2/XCorrection];

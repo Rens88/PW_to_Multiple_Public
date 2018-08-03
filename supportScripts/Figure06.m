@@ -142,6 +142,6 @@ set(gca, 'Position', pos)
 if exist('Figs') ~= 7
     disp('WARNING: Could not find folder <Figs>')
 end
-print(  '-r300' ,'-dtiff' ,'Figs\Fig06_freq_cross_updated_onlyonce_bf_rotated.tiff') % here you can specify filename extensions
+print(  '-r300' ,'-dtiff' ,'Figs' filesep 'Fig06_freq_cross_updated_onlyonce_bf_rotated.tiff') % here you can specify filename extensions
 
 end

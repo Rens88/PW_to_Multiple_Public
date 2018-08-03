@@ -1,3 +1,5 @@
+function [tti,mpd,vba] = interactionPredictions(p1,p2,time,varargin)
+% INTERACTIONPREDICTIONS:
 % Collision avoidance with multiple walkers: Sequential or simultaneous interactions?
 %
 % Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
@@ -18,9 +20,9 @@
 % 
 % INPUT:
 % The required input consists of the X & Y positions and velocity vectors (also X & Y) of two moving objects/persons.
-	% p1 = (X-pos object 1, Y-pos object 1)
-	% p2 = (X-pos object 2, Y-pos object 2)
-	% time = the time-series corresponding to the positions.
+% 	p1 = (X-pos object 1, Y-pos object 1)
+% 	p2 = (X-pos object 2, Y-pos object 2)
+% 	time = the time-series corresponding to the positions.
 %
 % Optional input is 'absMPD' (1 = absolute MPD, 0 = signed MPD). 
 % Absolute MPD will only assign positive values to MPD.
@@ -31,9 +33,9 @@
 % tti --> time to interaction
 % mpd --> minimal predicted distance
 % vba --> velocity of bearing angle; Note that the computation of vba is unverified (Rens, 4-4-2017)
+%
 
-function [tti,mpd,vba] = interactionPredictions(p1,p2,time,varargin)
-
+%%
 absMPD = 1;
 mult = 1;
 
@@ -124,8 +126,23 @@ end
 
 end
 
-
 function [vv] = velocity_vector (traj,time)
+% VELOCITY_VECTOR:
+% 02-08-2018 Rens Meerhoff
+% For questions, contact rensmeerhoff@gmail.com.
+%
+% Code was used for:
+% 'Collision avoidance with multiple walkers: Sequential or simultaneous interactions?'
+% Authored by: Laurentius A. Meerhoff, Julien Pettre, Sean D. Lynch, Armel Cretual, Anne-Helene Olivier
+% Submitted to: Frontiers in Psychology
+%
+% Code made available in the Matlab library from Anne-Helen Olivier
+%
+% - traj = a vector containing the X and Y positions
+% - time = the time corresponding to the trajectory
+%
+% Output:
+% - vv = the velocity vector
 
 vv = (1 / (time(3) - time(1)) ) * (traj(3:size(traj,1),:) - traj(1:size(traj,1)-2,:)) ;
 vv = [(1 / (time(2) - time(1)) ) * (traj(2,:) - traj(1,:)); vv];
