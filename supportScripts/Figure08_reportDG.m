@@ -492,10 +492,10 @@ if comparison ~= 0
     frameDiff = abs(SPMi.z) > SPMi.zstar;
     [~,maxz] = max(abs(SPMi.z));
     
-    disp([compString 'SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', p = ' num2str(SPMi.p)])
-    disp([compString 'SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', CORRECTED p = ' num2str(SPMi.p(1)*(.05/alphaLevel))])
+    disp([compString 'SPM sign: t(' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', p = ' num2str(SPMi.p)])
+    disp([compString 'SPM sign: t(' num2str(SPMi.df(2)) ') = ' num2str(SPMi.z(maxz)) ', CORRECTED p = ' num2str(SPMi.p(1)*(.05/alphaLevel))])
     if comparison == 3 % manuele oplossing om tweede verschil weer te geven
-        disp([compString 'SPM sign: z(1, ' num2str(SPMi.df(2)) ') = ' num2str(max(SPMi.z(790:end))) ', CORRECTED p = ' num2str(SPMi.p(2)*(.05/alphaLevel))])
+        disp([compString 'SPM sign: t(' num2str(SPMi.df(2)) ') = ' num2str(max(SPMi.z(790:end))) ', CORRECTED p = ' num2str(SPMi.p(2)*(.05/alphaLevel))])
     end
     frameWHY(1:1000) = why1;
     tmp = frameDiff(2:end) - frameDiff(1:end-1);
